@@ -21,3 +21,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+.idea/.name
+*.xml
+*.xml
+*.iml
+.idea/libraries/Maven__org_springframework_spring_tx_5_0_4_RELEASE.xml
+*.xml
+*.xml
+.idea/libraries/Maven__org_springframework_spring_test_5_0_4_RELEASE.xml
+.idea/libraries/Maven__junit_junit_4_12.xml
+.idea

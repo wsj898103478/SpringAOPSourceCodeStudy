@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.wsjkk</groupId>
-  <artifactId>jvmstudy</artifactId>
+  <artifactId>SpringAOPStudy</artifactId>
   <version>1.1.0</version>
 
-  <name>jvmstudy</name>
+  <name>SpringAOPStudy</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 

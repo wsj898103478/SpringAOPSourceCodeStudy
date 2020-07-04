@@ -27,7 +27,15 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  *                                      利用AspectJAutoProxyRegistrar自定义给容器中注册bean；registerAspectJAnnotationAutoProxyCreatorIfNecessary
  *                                      AnnotationAwareAspectJAutoProxyCreator
  *                                      给容器中注册一个AnnotationAwareAspectJAutoProxyCreator
- *   2、AnnotationAwareAspectJAutoProxyCreator：AbstractAdvisorAutoProxyCreator-->AbstractAutoProxyCreator
+ *   2、AnnotationAwareAspectJAutoProxyCreator：
+ *                                              AbstractAdvisorAutoProxyCreator-->
+ *                                              AbstractAutoProxyCreator-->
+ *                                              extends
+ *                                              ProxyProcessorSupport
+ *                                              implements
+ *                                              SmartInstantiationAwareBeanPostProcessor -->InstantiationAwareBeanPostProcessor
+ *                                              BeanFactoryAware-->Aware
+ *                                              关注后置处理器（在bean初始化完成前后做事情）
  *
  */
 @EnableAspectJAutoProxy
