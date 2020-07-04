@@ -25,7 +25,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  *      @EnableAspectJAutoProxy:
  *   1、@EnableAspectJAutoProxy是什么？ @Import(AspectJAutoProxyRegistrar.class)：给容器中导入AspectJAutoProxyRegistrar
  *                                      利用AspectJAutoProxyRegistrar自定义给容器中注册bean；registerAspectJAnnotationAutoProxyCreatorIfNecessary
- *                                      AnnotationAwareAspectJAutoProxyCreator
+ *                                      org.springframework.aop.config.internalAutoProxyCreator=AnnotationAwareAspectJAutoProxyCreator
  *                                      给容器中注册一个AnnotationAwareAspectJAutoProxyCreator
  *   2、AnnotationAwareAspectJAutoProxyCreator：
  *                                              AbstractAdvisorAutoProxyCreator-->
@@ -36,6 +36,41 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  *                                              SmartInstantiationAwareBeanPostProcessor -->InstantiationAwareBeanPostProcessor
  *                                              BeanFactoryAware-->Aware
  *                                              关注后置处理器（在bean初始化完成前后做事情）
+ *
+ *
+ *    AbstractAutoProxyCreator.setBeanFactory
+ *
+ *    AbstractAutoProxyCreator.postProcessBeforeInstantiation
+ *
+ *    AbstractAutoProxyCreator.postProcessAfterInitialization
+ *
+ *    AbstractAdvisorAutoProxyCreator.setBeanFactory
+ *
+ *    AbstractAdvisorAutoProxyCreator.initBeanFactory
+ *
+ *
+ *    AnnotationAwareAspectJAutoProxyCreator.initBeanFactory
+ *    流程：
+ *          3.1 beanFactory.getBeanNamesForType先获取ioc容器已经定义了的需要创建对象的所有postProcessorNames
+ *          3.2 addBeanPostProcessor再添加自定义的post处理器
+ *          3.3 priorityOrderedPostProcessors
+ *          3.4 internalPostProcessors
+ *          3.5 orderedPostProcessorNames
+ *          3.6 nonOrderedPostProcessorNames
+ *          3.7 registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors) 注册优先级高的postProcessors
+ *          3.8 registerBeanPostProcessors(beanFactory, orderedPostProcessors) 注册排序的postProcessors
+ *          3.9 registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors); 注册未排序的postProcessors
+ *          3.10 registerBeanPostProcessors(beanFactory, internalPostProcessors); 注册内部的postprocessors
+ *          3.11 注册BeanPostProcessor，实际上就是创建BeanPostProcessor对象，保存在容器中；
+ *     4）、finishBeanFactoryInitialization(beanFactory)；完成BeanFactory初始化工作；
+ *          创建剩下的单实例Bean
+ *          1）、createBean()；创建bean
+ *              【BeanPostProcessor是在Bean对象创建完成初始化前后调用的】
+ *              【InstantiationAwareBeanPostProcessor是在创建Bean实力之前先尝试用后置处理器返回对象的】（从中可以看出是如何解决循环遍历问题）
+ *          2）、先从缓存中获取当前bean，如果能获取到，说明bean是之前被创建过的，直接使用，否则再创建；
+ *               只要创建好的Bean都会被缓存起来
+ *               1）、resolveBeforeInstantiation(beanName, mbdToUse)希望后置处理器在此能返回一个代理对象；如果能返回代理对象就使用，如果不能，则创建
+ *
  *
  */
 @EnableAspectJAutoProxy
