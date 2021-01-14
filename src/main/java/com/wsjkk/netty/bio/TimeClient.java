@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class TimeClient {
     public static void main(String[] args) {
-        int port = 8080;
+        int port = 8070;
         if(args != null && args.length > 0){
             try {
                 port = Integer.valueOf(args[0]);
