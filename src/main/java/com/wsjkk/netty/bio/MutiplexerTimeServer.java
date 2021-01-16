@@ -26,11 +26,12 @@ public class MutiplexerTimeServer implements Runnable{
         try{
             //打开ServerSocketChannel，用于监听客户端的连接，它是所有客户端连接的父管道
             serverSocketChannel = ServerSocketChannel.open();
-            //绑定监听端口，
+            //绑定监听端口
+            //backlog:requested maximum length of the queue of incoming connections.
             serverSocketChannel.socket().bind(new InetSocketAddress(port),1024);
             //设置连接为非阻塞模式
             serverSocketChannel.configureBlocking(false);
-            //创建Reactor线程
+            //创建Selector线程
             selector = Selector.open();
             //将ServerSocketChannel注册到Reactor线程的多路复用器Selector上，监听ACCEPT事件
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -50,7 +51,6 @@ public class MutiplexerTimeServer implements Runnable{
      */
     @Override
     public void run() {
-
         while (!stop){
             try{
                 //循环遍历selector，他的休眠时间为1s。无论是否有读写等事件发生，selector每隔1s都被唤醒一次。
